@@ -5,8 +5,11 @@ let userAnswers = [];
 async function startQuiz() {
     const questionCount = document.getElementById('question-count').value;
     try {
-        // Update the API endpoint
-        const response = await fetch(`/.netlify/functions/api/questions/${questionCount}`);
+        // Determine if we're running locally or on Netlify
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const baseUrl = isLocalhost ? 'http://localhost:3000' : '';
+        
+        const response = await fetch(`${baseUrl}/api/questions/${questionCount}`);
         console.log('Response:', response); // Debug log
         
         if (!response.ok) {
