@@ -5,7 +5,7 @@ let userAnswers = [];
 async function startQuiz() {
     const questionCount = document.getElementById('question-count').value;
     try {
-        const response = await fetch(`/api/questions/${questionCount}`);
+        const response = await fetch(`/.netlify/functions/questions/${questionCount}`);
         currentQuestions = await response.json();
         currentQuestionIndex = 0;
         userAnswers = new Array(currentQuestions.length).fill(null);
