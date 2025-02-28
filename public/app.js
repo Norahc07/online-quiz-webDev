@@ -5,19 +5,14 @@ let userAnswers = [];
 async function startQuiz() {
     const questionCount = document.getElementById('question-count').value;
     try {
-        // Determine if we're running locally or on Netlify
-        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        const baseUrl = isLocalhost ? 'http://localhost:3000' : '';
-        
-        const response = await fetch(`${baseUrl}/api/questions/${questionCount}`);
-        console.log('Response:', response); // Debug log
+        // Use Netlify function URL directly in production
+        const response = await fetch(`/.netlify/functions/api/questions/${questionCount}`);
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
-        console.log('Data received:', data); // Debug log
         
         if (!data || !Array.isArray(data)) {
             throw new Error('Invalid data received from server');

@@ -345,7 +345,6 @@ const questions = [
   ];  
 
 exports.handler = async (event, context) => {
-  // CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -353,21 +352,14 @@ exports.handler = async (event, context) => {
     'Content-Type': 'application/json'
   };
 
-  // Handle OPTIONS request for CORS
   if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers,
-      body: ''
-    };
+    return { statusCode: 200, headers, body: '' };
   }
 
   try {
-    // Get the number from the path parameter
     const paths = event.path.split('/');
     const number = parseInt(paths[paths.length - 1]) || 20;
-
-    // Shuffle and select questions
+    
     const shuffledQuestions = [...questions].sort(() => 0.5 - Math.random());
     const selectedQuestions = shuffledQuestions.slice(0, number);
 
@@ -377,14 +369,10 @@ exports.handler = async (event, context) => {
       body: JSON.stringify(selectedQuestions)
     };
   } catch (error) {
-    console.error('Function error:', error);
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ 
-        error: 'Failed to fetch questions',
-        details: error.message 
-      })
+      body: JSON.stringify({ error: 'Failed to fetch questions' })
     };
   }
 }; 
