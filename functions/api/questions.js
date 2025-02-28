@@ -1,4 +1,22 @@
-const questions = [
+exports.handler = async (event, context) => {
+  // CORS headers
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Content-Type': 'application/json'
+  };
+
+  // Handle OPTIONS request for CORS
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
+  }
+
+  const questions = [
     {
       question: "What is Node.js?",
       options: [
@@ -171,7 +189,8 @@ const questions = [
     },
     {
       question: "What will the following code output?",
-      imageUrl: "/date-time.png",  // Make sure to include the leading slash
+      imageUrl: "/date-time.png",
+      code: "console.log(new Date());",
       options: [
         "a) The current date and time",
         "b) Hello World!",
@@ -344,19 +363,27 @@ const questions = [
     // Additional questions can be added similarly.
   ];
 
-exports.handler = async (event, context) => {
-  const number = event.path.split('/').pop();
-  const numQuestions = parseInt(number);
-  
-  const shuffledQuestions = questions.sort(() => 0.5 - Math.random());
-  const selectedQuestions = shuffledQuestions.slice(0, numQuestions);
-  
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    },
-    body: JSON.stringify(selectedQuestions)
-  };
-} 
+  try {
+    const number = event.path.split('/').pop();
+    const numQuestions = parseInt(number) || 10; // Default to 10 if no number provided
+    
+    const shuffledQuestions = [...questions].sort(() => 0.5 - Math.random());
+    const selectedQuestions = shuffledQuestions.slice(0, numQuestions);
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(selectedQuestions)
+    };
+  } catch (error) {
+    console.error('Function error:', error);
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ 
+        error: 'Failed to fetch questions',
+        details: error.message 
+      })
+    };
+  }
+}; 

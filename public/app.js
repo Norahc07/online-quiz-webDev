@@ -5,11 +5,26 @@ let userAnswers = [];
 async function startQuiz() {
     const questionCount = document.getElementById('question-count').value;
     try {
-        const response = await fetch(`/.netlify/functions/questions/${questionCount}`);
+        // For local development
+        const baseUrl = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000' 
+            : '/.netlify/functions';
+
+        const response = await fetch(`${baseUrl}/api/questions/${questionCount}`);
+        console.log('Response:', response); // Debug log
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        currentQuestions = await response.json();
+        
+        const data = await response.json();
+        console.log('Data received:', data); // Debug log
+        
+        if (!data || !Array.isArray(data)) {
+            throw new Error('Invalid data received from server');
+        }
+
+        currentQuestions = data;
         currentQuestionIndex = 0;
         userAnswers = new Array(currentQuestions.length).fill(null);
         
@@ -20,7 +35,7 @@ async function startQuiz() {
         createNavigationButtons();
         updateNavigationButtons();
     } catch (error) {
-        console.error('Error fetching questions:', error);
+        console.error('Error details:', error);
         alert('Failed to load quiz questions. Please try again.');
     }
 }
