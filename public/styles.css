@@ -1,28 +1,249 @@
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #2196F3;
+    --error-color: #f44336;
+    --success-color: #4CAF50;
+    --background-color: #f5f5f5;
+    --text-color: #333;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: var(--background-color);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
 .container {
     background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    padding: 2rem;
+    width: 90%;
+    max-width: 800px;
+    margin: 20px;
 }
 
 h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-select, button {
-    padding: 10px;
-    font-size: 16px;
-    margin: 10px 0;
+.quiz-setup {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+select, .btn-primary, .btn-secondary {
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+select {
+    width: 200px;
+    border: 2px solid #ddd;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#question-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.question-numbers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 1rem;
+}
+
+.nav-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: #f0f0f0;
+}
+
+.nav-button.answered {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.nav-button.active {
+    background-color: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+.btn-nav {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-nav:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.btn-nav:not(:disabled):hover {
+    background-color: var(--secondary-color);
+}
+
+.question-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.question-text {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.option-label {
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.option-label:hover {
+    background-color: #f5f5f5;
+}
+
+.option-label.selected {
+    border-color: var(--primary-color);
+    background-color: #e8f5e9;
+}
+
+.result-card {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+.result-card.passed {
+    background-color: #e8f5e9;
+    border: 2px solid var(--success-color);
+}
+
+.result-card.failed {
+    background-color: #ffebee;
+    border: 2px solid var(--error-color);
+}
+
+.score {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+.total {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.status {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.finish-nav-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--success-color);
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+}
+
+.finish-nav-button:hover {
+    background-color: var(--success-color);
+}
+
+.finish-nav-button:hover .checkmark {
+    color: white;
+}
+
+.checkmark {
+    color: var(--success-color);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.finish-nav-button.disabled {
+    border-color: #ddd;
+    cursor: not-allowed;
+}
+
+.finish-nav-button.disabled .checkmark {
+    color: #ddd;
 }

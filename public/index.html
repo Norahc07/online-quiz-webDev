@@ -1,22 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Quiz</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Online Node.js Quiz</h1>
-        <label for="questionCount">Choose the number of questions:</label>
-        <select id="questionCount">
-            <option value="20">20 Questions</option>
-            <option value="30">30 Questions</option>
-            <option value="50">50 Questions</option>
+  <div class="container">
+    <div id="dashboard" class="section">
+      <h1>Welcome to the Node.js Quiz</h1>
+      <div class="quiz-setup">
+        <label for="question-count">Select number of questions:</label>
+        <select id="question-count">
+          <option value="20">20 Questions</option>
+          <option value="30">30 Questions</option>
+          <option value="50">50 Questions</option>
         </select>
-        <button id="startQuizBtn">Start Quiz</button>
+        <button onclick="startQuiz()" class="btn-primary">Start Quiz</button>
+      </div>
     </div>
-    <script src="app.js"></script>
+
+    <div id="quiz-section" class="section" style="display: none;">
+      <div id="quiz-content">
+        <!-- Questions will appear here -->
+      </div>
+      <div id="question-navigation"></div>
+      <button id="finish-button" onclick="finishQuiz()" class="btn-primary" style="display: none;">Finish Quiz</button>
+    </div>
+
+    <div id="result-section" class="section" style="display: none;">
+      <h2>Quiz Results</h2>
+      <div id="result"></div>
+      <button onclick="retakeQuiz()" class="btn-secondary">Take Quiz Again</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
