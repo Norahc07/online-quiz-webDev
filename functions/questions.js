@@ -344,7 +344,7 @@ const questions = [
     // Additional questions can be added similarly.
   ];
 
-exports.handler = async function(event, context) {
+exports.handler = async (event, context) => {
   const number = event.path.split('/').pop();
   const numQuestions = parseInt(number);
   

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "build": "npm install",
+    "build": "npm install && mkdir -p functions",
     "dev": "netlify dev"
   },
   "keywords": [],

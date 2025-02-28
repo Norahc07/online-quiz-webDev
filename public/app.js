@@ -6,6 +6,9 @@ async function startQuiz() {
     const questionCount = document.getElementById('question-count').value;
     try {
         const response = await fetch(`/.netlify/functions/questions/${questionCount}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         currentQuestions = await response.json();
         currentQuestionIndex = 0;
         userAnswers = new Array(currentQuestions.length).fill(null);
@@ -18,6 +21,7 @@ async function startQuiz() {
         updateNavigationButtons();
     } catch (error) {
         console.error('Error fetching questions:', error);
+        alert('Failed to load quiz questions. Please try again.');
     }
 }
 
