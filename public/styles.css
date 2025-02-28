@@ -247,3 +247,21 @@ select {
 .finish-nav-button.disabled .checkmark {
     color: #ddd;
 }
+
+.question-image {
+    max-width: 100%;
+    height: auto;
+    margin: 15px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: block;
+}
+
+.code-block {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-family: monospace;
+    white-space: pre-wrap;
+}

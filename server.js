@@ -188,6 +188,7 @@ const questions = [
     },
     {
       question: "What will the following code output?",
+      imageUrl: "/date-time.png",  // Make sure to include the leading slash
       options: [
         "a) The current date and time",
         "b) Hello World!",
