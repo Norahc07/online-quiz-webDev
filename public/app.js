@@ -3,25 +3,36 @@ let currentQuestionIndex = 0;
 let userAnswers = [];
 
 async function startQuiz() {
-    const questionCount = document.getElementById('question-count').value;
     try {
-        // Use Netlify function URL directly in production
-        const response = await fetch(`/.netlify/functions/api/questions/${questionCount}`);
+        const questionCount = document.getElementById('question-count').value;
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const baseUrl = isLocalhost ? 'http://localhost:3000' : '';
+        
+        console.log('Requesting questions:', questionCount);
+        
+        const response = await fetch(`${baseUrl}/api/questions/${questionCount}`);
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
+        console.log('Received questions count:', Array.isArray(data) ? data.length : 'Invalid data');
         
-        if (!data || !Array.isArray(data)) {
+        // Handle both direct array and nested questions array
+        const questions = Array.isArray(data) ? data : data.questions;
+        
+        if (!Array.isArray(questions)) {
             throw new Error('Invalid data received from server');
         }
 
-        currentQuestions = data;
+        console.log('Final questions count:', questions.length);
+        
+        currentQuestions = questions;
         currentQuestionIndex = 0;
         userAnswers = new Array(currentQuestions.length).fill(null);
         
+        document.getElementById('error-message').textContent = '';
         document.getElementById('dashboard').style.display = 'none';
         document.getElementById('quiz-section').style.display = 'block';
         
@@ -29,14 +40,17 @@ async function startQuiz() {
         createNavigationButtons();
         updateNavigationButtons();
     } catch (error) {
-        console.error('Error details:', error);
-        alert('Failed to load quiz questions. Please try again.');
+        console.error('Error:', error);
+        document.getElementById('error-message').textContent = 'Failed to load quiz questions. Please try again.';
     }
 }
 
 function displayCurrentQuestion() {
     const question = currentQuestions[currentQuestionIndex];
     const quizContent = document.getElementById('quiz-content');
+    
+    // Get the choices array (handle both 'options' and 'choices' properties)
+    const choices = question.choices || question.options;
     
     const questionHTML = `
         <div class="question-container">
@@ -46,11 +60,11 @@ function displayCurrentQuestion() {
             ${question.imageUrl ? `<img src="${question.imageUrl}" alt="Question Image" class="question-image">` : ''}
             ${question.code ? `<pre class="code-block">${question.code}</pre>` : ''}
             <div class="options-container">
-                ${question.options.map((option, index) => `
-                    <label class="option-label ${userAnswers[currentQuestionIndex] === option ? 'selected' : ''}">
-                        <input type="radio" name="question${currentQuestionIndex}" value="${option}" 
-                            ${userAnswers[currentQuestionIndex] === option ? 'checked' : ''}>
-                        ${option}
+                ${choices.map((choice, index) => `
+                    <label class="option-label ${userAnswers[currentQuestionIndex] === choice ? 'selected' : ''}">
+                        <input type="radio" name="question${currentQuestionIndex}" value="${choice}" 
+                            ${userAnswers[currentQuestionIndex] === choice ? 'checked' : ''}>
+                        ${choice}
                     </label>
                 `).join('')}
             </div>
